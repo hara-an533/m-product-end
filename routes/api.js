@@ -1,5 +1,7 @@
 const router = require('koa-router')(),
-    msql = require('../lib/dbclass')
+      addtoken = require('../token/createtoken'),
+      gettoken=require('../token/gettoken')
+      msql = require('../lib/dbclass')
 
 
 router.post('/login', async ctx => {
@@ -13,7 +15,10 @@ router.post('/login', async ctx => {
         let res = await msql.query(sql)
         // console.log(res);
         if (res.length > 0) {
+            let tk=addtoken({id:id,password:pwd})
+            // console.log(tk);
             ctx.body = {
+                tk,
                 id:id,
                 pwd:pwd,
                 status: 200
